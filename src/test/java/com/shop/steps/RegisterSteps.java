@@ -27,7 +27,7 @@ public class RegisterSteps {
 
     @Given("a visitor on the registration page")
     public void aVisitorOnTheRegistrationPage() {
-        registerPage().goTo();
+        homePage().goToRegister();
     }
 
     @When("the visitor registers with random valid details")
@@ -36,7 +36,7 @@ public class RegisterSteps {
         String lastName = faker.name().lastName();
         String email = firstName.toLowerCase() + "." + lastName.toLowerCase()
                 + faker.number().numberBetween(1, 99999) + "@test.com";
-        String password = faker.internet().password(8, 16, true, true, true);
+        String password = faker.credentials().password(8, 16, true, true, true);
         String gender = faker.bool().bool() ? "Male" : "Female";
 
         Variables.setRegisteredEmail(email);
@@ -67,17 +67,17 @@ public class RegisterSteps {
     @Given("an existing user registered with email {string}")
     public void anExistingUserRegisteredWithEmail(String email) {
         String uniqueEmail = email.replace("@", "." + System.currentTimeMillis() + "@");
-        String password = faker.internet().password(8, 16, true, true, true);
+        String password = faker.credentials().password(8, 16, true, true, true);
         Variables.setRegisteredEmail(uniqueEmail);
         Variables.setRegisteredPassword(password);
-        registerPage().goTo();
+        homePage().goToRegister();
         registerPage().registerWithDetails("Male", faker.name().firstName(), faker.name().lastName(),
                 uniqueEmail, password, password);
         if (registerPage().isRegistrationSuccessMessageDisplayed()) {
             registerPage().clickContinue();
             homePage().clickLogout();
         }
-        registerPage().goTo();
+        homePage().goToRegister();
     }
 
     @When("the visitor attempts to register with the email {string}")
@@ -88,7 +88,7 @@ public class RegisterSteps {
         }
         String firstName = faker.name().firstName();
         String lastName = faker.name().lastName();
-        String password = faker.internet().password(8, 16, true, true, true);
+        String password = faker.credentials().password(8, 16, true, true, true);
         registerPage().registerWithDetails("Female", firstName, lastName, targetEmail, password, password);
     }
 
@@ -97,7 +97,7 @@ public class RegisterSteps {
         String firstName = faker.name().firstName();
         String lastName = faker.name().lastName();
         String email = faker.internet().emailAddress();
-        String password = faker.internet().password(8, 16, true, true, true);
+        String password = faker.credentials().password(8, 16, true, true, true);
         registerPage().registerWithDetails("Male", firstName, lastName, email, password, password + "Mismatch");
     }
 
@@ -111,7 +111,7 @@ public class RegisterSteps {
         String firstName = faker.name().firstName();
         String lastName = faker.name().lastName();
         String email = faker.internet().emailAddress();
-        String password = faker.internet().password(8, 16, true, true, true);
+        String password = faker.credentials().password(8, 16, true, true, true);
 
         registerPage().selectGender("Male");
         if (!missingField.equalsIgnoreCase("first name")) {

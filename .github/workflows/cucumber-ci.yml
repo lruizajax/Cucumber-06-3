@@ -17,14 +17,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
-      # step 2: Set up Java
+    # step 2: Set up Java
       - name: Set up Java
         uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: '21'
 
-      # step 3: download dependencies
+    # step 3: download dependencies
       - name: Download dependencies
         uses: actions/cache@v5
         with:
@@ -33,7 +33,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # step 4: Install allure dependencies
+    # step 4: Install allure dependencies
       - name: Install Allure dependencies
         run: |
           ALLURE_VERSION=2.46.1
@@ -41,20 +41,20 @@ jobs:
           tar -zxvf allure-${ALLURE_VERSION}.tgz
           echo "$PWD/allure-${ALLURE_VERSION}/bin" >> $GITHUB_PATH
 
-      # step 5: verify allure installation
+    # step 5: verify allure installation
       - name: Verify Allure installation
         run: allure --version
 
-      # step 6: Run tests with cucumber
+    # step 6: Run tests with cucumber
       - name: Run cucumber tests
         run: mvn clean verify -Dcucumber.filter.tags="@regression"
 
-      # step 7: Generate Allure report
+    # step 7: Generate Allure report
       - name: Generate Allure report
         if: always()
         run: allure generate target/allure-results --clean -o target/allure-report
 
-      # step 8: Upload cucumber report as an artifact
+    # step 8: Upload cucumber report as an artifact
       - name: Upload Cucumber report
         if: always()
         uses: actions/upload-artifact@v5
@@ -65,7 +65,7 @@ jobs:
             target/cucumber-reports/cucumber.json
             target/cucumber-reports/cucumber.html
 
-      # step 9: Upload Allure report as an artifact
+    # step 9: Upload Allure report as an artifact
       - name: Upload Allure report
         if: always()
         uses: actions/upload-artifact@v5
@@ -73,7 +73,8 @@ jobs:
           name: allure-report
           path: target/allure-report
 
-      # step 10: Upload Allure report as GitHub Pages artifact (required by deploy-pages)
+    # step 10: Upload Allure report as GitHub Pages artifact (required by deploy-pages)
+    # https://github.com/actions/upload-pages-artifact
       - name: Upload Allure report to GitHub Pages
         if: always()
         uses: actions/upload-pages-artifact@v3

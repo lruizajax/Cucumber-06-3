@@ -3,13 +3,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Auto-Cucumber-06-3</groupId>
-	<artifactId>Cucumber-06-3</artifactId>
+	<artifactId>Cucumber-06-4</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Auto-Cucumber-06-3</name>
 
 	<properties>
-		<maven.compiler.source>21</maven.compiler.source>
-		<maven.compiler.target>21</maven.compiler.target>
+		<maven.compiler.release>21</maven.compiler.release>
 		<cucumber.version>7.34.3</cucumber.version>
 		<allure.version>2.29.1</allure.version>
 		<aspectj.version>1.9.25</aspectj.version>

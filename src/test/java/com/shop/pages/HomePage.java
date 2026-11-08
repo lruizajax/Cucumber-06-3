@@ -1,11 +1,12 @@
 package com.shop.pages;
 
+import com.shop.utils.Variables;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class HomePage extends BasePage {
 
-    private static final String URL = "https://demowebshop.tricentis.com/";
+    private static final String URL = Variables.BASE_URL + "/";
 
     private By accountLink = By.cssSelector(".header-links .account");
     private By logoutLink = By.linkText("Log out");
@@ -21,8 +22,20 @@ public class HomePage extends BasePage {
         driver.get(URL);
     }
 
-    public void clickProductByName(String productName) {
-        click(By.linkText(productName));
+    public void goToLogin() {
+        driver.get(Variables.BASE_URL + "/login");
+    }
+
+    public void goToRegister() {
+        driver.get(Variables.BASE_URL + "/register");
+    }
+
+    public void goToCart() {
+        driver.get(Variables.BASE_URL + "/cart");
+    }
+
+    public void goToWishlist() {
+        driver.get(Variables.BASE_URL + "/wishlist");
     }
 
     public String getProductUrl(String productName) {
@@ -31,10 +44,6 @@ public class HomePage extends BasePage {
 
     public String getLoggedInEmail() {
         return getText(accountLink);
-    }
-
-    public boolean isEmailDisplayed(String email) {
-        return waitForElement(accountLink).getText().equals(email);
     }
 
     public boolean isLogoutLinkDisplayed() {

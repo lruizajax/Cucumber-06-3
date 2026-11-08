@@ -11,9 +11,6 @@ import io.cucumber.java.en.When;
 
 public class LoginSteps {
 
-    private static final String VALID_EMAIL = "mruizg@gmail.com";
-    private static final String VALID_PASSWORD = "*9Q>:ir7Tnb@V&d";
-
     private LoginPage loginPage() {
         return new LoginPage(DriverFactory.getDriver());
     }
@@ -24,19 +21,19 @@ public class LoginSteps {
 
     @Given("an unauthenticated user on the login page")
     public void anUnauthenticatedUserOnTheLoginPage() {
-        loginPage().goTo();
+        homePage().goToLogin();
     }
 
     @When("the user authenticates with valid credentials")
     public void theUserAuthenticatesWithValidCredentials() {
-        loginPage().loginWithCredentials(VALID_EMAIL, VALID_PASSWORD);
+        loginPage().loginWithCredentials(Variables.VALID_EMAIL, Variables.VALID_PASSWORD);
     }
 
     @Then("the user should see their email in the account area")
     public void theUserShouldSeeTheirEmailInTheAccountArea() {
         String actualEmail = homePage().getLoggedInEmail();
-        assert actualEmail.equals(VALID_EMAIL)
-                : "Expected email '" + VALID_EMAIL + "' but found '" + actualEmail + "'";
+        assert actualEmail.equals(Variables.VALID_EMAIL)
+                : "Expected email '" + Variables.VALID_EMAIL + "' but found '" + actualEmail + "'";
     }
 
     @Then("the user should see the logout link")
@@ -49,13 +46,6 @@ public class LoginSteps {
         homePage().clickLogout();
     }
 
-    @When("the user authenticates with the registered credentials")
-    public void theUserAuthenticatesWithRegisteredCredentials() {
-        String email = Variables.getRegisteredEmail();
-        String password = Variables.getRegisteredPassword();
-        loginPage().loginWithCredentials(email, password);
-    }
-
     @Then("the user should see the login link")
     public void theUserShouldSeeTheLoginLink() {
         assert homePage().isLoginLinkDisplayed() : "Login link is not displayed";
@@ -64,15 +54,15 @@ public class LoginSteps {
     @Then("the user should be redirected to the home page")
     public void theUserShouldBeRedirectedToTheHomePage() {
         String currentUrl = homePage().getCurrentUrl();
-        assert currentUrl.equals("https://demowebshop.tricentis.com/")
-                || currentUrl.equals("https://demowebshop.tricentis.com")
+        assert currentUrl.equals(Variables.BASE_URL + "/")
+                || currentUrl.equals(Variables.BASE_URL)
                 : "Not redirected to home page. Current URL: " + currentUrl;
     }
 
     @Given("an authenticated user in the system")
     public void anAuthenticatedUserInTheSystem() {
-        loginPage().goTo();
-        loginPage().loginWithCredentials(VALID_EMAIL, VALID_PASSWORD);
+        homePage().goToLogin();
+        loginPage().loginWithCredentials(Variables.VALID_EMAIL, Variables.VALID_PASSWORD);
     }
 
     @When("the user attempts to authenticate with email {string} and password {string}")

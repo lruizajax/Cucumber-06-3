@@ -6,6 +6,8 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 
+import com.shop.pages.HomePage;
+
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
@@ -15,7 +17,9 @@ public class Hooks {
 
     @Before
     public void setUp() {
-        DriverFactory.setDriver(DriverFactory.createDriver());
+        WebDriver driver = DriverFactory.createDriver();
+        DriverFactory.setDriver(driver);
+        new HomePage(driver).goTo();
     }
 
     @After

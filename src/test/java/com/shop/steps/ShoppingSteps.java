@@ -86,7 +86,7 @@ public class ShoppingSteps {
 
     @When("the user accesses their shopping cart")
     public void theUserAccessesTheirShoppingCart() {
-        cartPage().goTo();
+        homePage().goToCart();
     }
 
     @When("the user completes the checkout process")
@@ -114,7 +114,7 @@ public class ShoppingSteps {
 
     @Then("the product should be in the cart")
     public void theProductShouldBeInTheCart() {
-        cartPage().goTo();
+        homePage().goToCart();
         assert cartPage().getItemCount() > 0 : "No products found in cart";
     }
 
@@ -125,7 +125,7 @@ public class ShoppingSteps {
 
     @Then("all selected books should be in the cart")
     public void allSelectedBooksShouldBeInTheCart() {
-        cartPage().goTo();
+        homePage().goToCart();
         assert cartPage().getItemCount() > 0 : "No books found in cart";
     }
 
@@ -187,20 +187,20 @@ public class ShoppingSteps {
 
     @When("the user changes the product quantity to {string}")
     public void theUserChangesProductQuantityTo(String quantity) {
-        cartPage().goTo();
+        homePage().goToCart();
         cartPage().updateQuantity(quantity);
         homePage().waitForCartToUpdate(Integer.parseInt(quantity));
     }
 
     @When("the user removes all products from the cart")
     public void theUserRemovesAllProductsFromTheCart() {
-        cartPage().goTo();
+        homePage().goToCart();
         cartPage().removeAllItems();
     }
 
     @When("the user applies a valid discount coupon")
     public void theUserAppliesAValidDiscountCoupon() {
-        cartPage().goTo();
+        homePage().goToCart();
         try {
             cartPage().applyCoupon("COUPON123");
             waitForAjax();
@@ -249,14 +249,14 @@ public class ShoppingSteps {
         DriverFactory.getDriver().get(url);
         productPage().addToCart();
         homePage().waitForCartToUpdate(1);
-        cartPage().goTo();
+        homePage().goToCart();
         cartPage().acceptTerms();
         cartPage().proceedToCheckout();
     }
 
     @Then("the cart should contain {int} unit\\(s\\) of {string}")
     public void theCartShouldContainQuantityUnitsOfProduct(int quantity, String product) {
-        cartPage().goTo();
+        homePage().goToCart();
         homePage().waitForCartToUpdate(1);
         assert cartPage().getTotalQuantity() >= quantity
                 : "Cart contains " + cartPage().getTotalQuantity() + " units, expected at least " + quantity;
@@ -291,7 +291,7 @@ public class ShoppingSteps {
 
     @Then("the product should appear in the wishlist")
     public void theProductShouldAppearInTheWishlist() {
-        wishlistPage().goTo();
+        homePage().goToWishlist();
         assert wishlistPage().getItemCount() > 0 : "No products in wishlist";
     }
 
@@ -308,7 +308,7 @@ public class ShoppingSteps {
 
     @Then("the gift card should be in the cart")
     public void theGiftCardShouldBeInTheCart() {
-        cartPage().goTo();
+        homePage().goToCart();
         assert cartPage().getItemCount() > 0 : "Gift card not found in cart";
     }
 
@@ -320,14 +320,14 @@ public class ShoppingSteps {
     }
 
     private void proceedFromCartToCheckout() {
-        cartPage().goTo();
+        homePage().goToCart();
         cartPage().acceptTerms();
         cartPage().proceedToCheckout();
         checkoutPage().waitForCheckoutPage();
         String currentUrl = DriverFactory.getDriver().getCurrentUrl();
         if (currentUrl.contains("/cart") || currentUrl.contains("Cart")) {
             System.out.println("  [checkout] Still on cart page, retrying checkout...");
-            cartPage().goTo();
+            homePage().goToCart();
             cartPage().acceptTerms();
             cartPage().proceedToCheckout();
             checkoutPage().waitForCheckoutPage();

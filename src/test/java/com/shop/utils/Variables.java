@@ -2,6 +2,11 @@ package com.shop.utils;
 
 public class Variables {
 
+    public static final String VALID_EMAIL = "mruizg@gmail.com";
+    public static final String VALID_PASSWORD = "*9Q>:ir7Tnb@V&d";
+
+    public static final String BASE_URL = "https://demowebshop.tricentis.com";
+
     private static ThreadLocal<String> registeredEmail = new ThreadLocal<>();
     private static ThreadLocal<String> registeredPassword = new ThreadLocal<>();
 
@@ -17,12 +22,4 @@ public class Variables {
         registeredPassword.set(password);
     }
 
-    public static String getRegisteredPassword() {
-        return registeredPassword.get();
-    }
-
-    public static void clear() {
-        registeredEmail.remove();
-        registeredPassword.remove();
-    }
 }
