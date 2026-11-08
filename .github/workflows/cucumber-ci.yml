@@ -72,6 +72,15 @@ jobs:
         with:
           name: allure-report
           path: target/allure-report
+
+      # step 10: Upload Allure report as GitHub Pages artifact (required by deploy-pages)
+      - name: Upload Allure report to GitHub Pages
+        if: always()
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: github-pages
+          path: target/allure-report
+
   deploy:
     needs: test
     if: always()
