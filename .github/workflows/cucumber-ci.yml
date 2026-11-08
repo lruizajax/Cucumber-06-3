@@ -1,0 +1,69 @@
+name: Cucumber CI - Online
+on:
+  push:
+    branches:
+      - master
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    # step 1: Checkout the repository
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      # step 2: Set up Java
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      # step 3: download dependencies
+      - name: Download dependencies
+        uses: actions/cache@v5
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # step 4: Install allure dependencies
+      - name: Install Allure dependencies
+        run: |
+          ALLURE_VERSION=2.46.1
+          wget https://github.com/allure-framework/allure2/releases/download/${ALLURE_VERSION}/allure-${ALLURE_VERSION}.tgz
+          tar -zxvf allure-${ALLURE_VERSION}.tgz
+          echo "$PWD/allure-${ALLURE_VERSION}/bin" >> $GITHUB_PATH
+
+      # step 5: verify allure installation
+      - name: Verify Allure installation
+        run: allure --version
+
+      # step 6: Run tests with cucumber
+      - name: Run cucumber tests
+        run: mvn clean verify -Dcucumber.filter.tags="@regression"
+
+      # step 7: Generate Allure report
+      - name: Generate Allure report
+        if: always()
+        run: allure generate target/allure-results --clean -o target/allure-report
+
+      # step 8: Upload cucumber report as an artifact
+      - name: Upload Cucumber report
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: cucumber-report
+          path: |
+            target/cucumber-reports
+            target/cucumber-reports/cucumber.json
+            target/cucumber-reports/cucumber.html
+
+      # step 9: Upload Allure report as an artifact
+      - name: Upload Allure report
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: allure-report
+          path: target/allure-report
